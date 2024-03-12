@@ -4,7 +4,9 @@ import com.streamAPI.StreamAPI.Employee;
 import com.streamAPI.StreamAPI.exception.EmployeeAlreadyAddedException;
 import com.streamAPI.StreamAPI.exception.EmployeeNotFoundException;
 import com.streamAPI.StreamAPI.exception.EmployeeStorageIsFullException;
+import com.streamAPI.StreamAPI.exception.IllegalArgumentException;
 import com.streamAPI.StreamAPI.service.EmployeeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -19,18 +21,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee add(String firstName,  String lastName, int departmentId, int salary) {
-        Employee employee = new Employee(firstName, lastName, departmentId, salary);
+        String[] names = validateAndCapitalizeName(firstName, lastName);
+        Employee employee = new Employee(names[0], names[1], departmentId, salary);
         return add(employee);
     }
     @Override
     public Employee add(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+        String[] names = validateAndCapitalizeName(firstName, lastName);
+        Employee employee = new Employee(names[0], names[1]);
         return add(employee);
     }
 
     @Override
     public Employee remove(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+        String[] names = validateAndCapitalizeName(firstName, lastName);
+        Employee employee = new Employee(names[0], names[1]);
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
         }
@@ -40,11 +45,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+        String[] names = validateAndCapitalizeName(firstName, lastName);
+        Employee employee = new Employee(names[0], names[1]);
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
         }
-        return employee;
+        return employees.get(employee.getFullName());
     }
 
     @Override
@@ -61,5 +67,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         employees.put(employee.getFullName(), employee);
         return employee;
+    }
+
+    private String[] validateAndCapitalizeName(String firstName, String lastName) {
+        if (StringUtils.isAnyEmpty(firstName, lastName) || !firstName.matches("[A-Za-z]+") || !lastName.matches("[A-Za-z]+"))  {
+            throw new IllegalArgumentException();
+        }
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
+        return new String[]{firstName, lastName};
     }
 }

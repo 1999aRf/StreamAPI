@@ -20,30 +20,26 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("add")
+    @GetMapping("/add")
     public Employee add(@RequestParam String firstName, @RequestParam String lastName) {
-        String[] names = validateAndCapitalizeName(firstName, lastName);
-        return employeeService.add(names[0], names[1]);
+        return employeeService.add(firstName, lastName);
     }
-    @GetMapping("add2")
+    @GetMapping("/add2")
     public Employee add(@RequestParam String firstName,
                         @RequestParam String lastName,
                         @RequestParam int departmentId,
                         @RequestParam int salary) {
-        String[] names = validateAndCapitalizeName(firstName, lastName);
-        return employeeService.add(names[0], names[1], departmentId, salary);
+        return employeeService.add(firstName, lastName, departmentId, salary);
     }
 
-    @GetMapping("remove")
+    @GetMapping("/remove")
     public Employee remove(@RequestParam String firstName, @RequestParam String lastName) {
-        String[] names = validateAndCapitalizeName(firstName, lastName);
-        return employeeService.remove(names[0], names[1]);
+        return employeeService.remove(firstName, lastName);
     }
 
-    @GetMapping("find")
+    @GetMapping("/find")
     public Employee find(@RequestParam String firstName, @RequestParam String lastName) {
-        String[] names = validateAndCapitalizeName(firstName, lastName);
-        return employeeService.find(names[0], names[1]);
+        return employeeService.find(firstName, lastName);
     }
 
     @GetMapping
@@ -51,12 +47,4 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    private String[] validateAndCapitalizeName(String firstName, String lastName) {
-        if (StringUtils.isAnyEmpty(firstName, lastName) || !firstName.matches("[A-Za-z]+") || !lastName.matches("[A-Za-z]+"))  {
-            throw new IllegalArgumentException();
-        }
-            firstName = StringUtils.capitalize(firstName);
-            lastName = StringUtils.capitalize(lastName);
-            return new String[]{firstName, lastName};
-    }
 }
