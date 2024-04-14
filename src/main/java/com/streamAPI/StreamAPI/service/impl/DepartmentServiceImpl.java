@@ -51,8 +51,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Map<Integer, List<Employee>> findEmployeesByDepartment() {
+    public Map<Integer, List<Employee>> groupedEmployeesByDepartment() {
+        Collection<Employee> employees = employeeService.findAll();
+        return employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartmentId));
+    }
+
+    @Override
+    public Integer getTotalSalaryByDepartment(int departmentId) {
         return employeeService.findAll().stream()
-                .collect(groupingBy(Employee::getDepartmentId));
+                .filter(e -> e.getDepartmentId() == departmentId)
+                .mapToInt(Employee::getSalary)
+                .sum();
     }
 }
