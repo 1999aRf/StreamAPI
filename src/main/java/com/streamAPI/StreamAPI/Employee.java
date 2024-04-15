@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Employee {
-
+    private Integer id;
     private String firstName;
     private String lastName;
     private int departmentId;

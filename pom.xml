@@ -33,7 +33,33 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version> <!-- Используйте актуальную версию -->
 		</dependency>
-	</dependencies>
+
+        <dependency>
+            <groupId>com.streamAPI</groupId>
+            <artifactId>StreamAPI</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.10.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>4.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
